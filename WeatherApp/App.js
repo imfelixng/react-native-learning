@@ -1,75 +1,132 @@
-import React from 'react';
+import React from "react";
 import {
-  StyleSheet, Text, View, Platform,
+  StyleSheet,
+  Text,
+  View,
+  Platform,
   ImageBackground,
-} from 'react-native';
+  ActivityIndicator,
+  StatusBar,
+  KeyboardAvoidingView
+} from "react-native";
 
-import getImageForWeather from './utils/getImageForWeather';
+import { fetchLocationId, fetchWeather } from "./utils/api";
 
-import { SearchInput } from './components';
+import getImageForWeather from "./utils/getImageForWeather";
+
+import { SearchInput } from "./components";
 
 const App = () => {
+  const [city, setCity] = React.useState("London");
+  const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(false);
+  const [info, setInfo] = React.useState({
+    location: "",
+    temperature: 0,
+    weather: ""
+  });
 
-  const [city, setCity] = React.useState('Da Nang');
+  React.useEffect(
+    () => {
+      handleUpdateCity(city);
+    },
+    [] // componentDidMount
+  )
 
-  const handleUpdateCity = (city) => {
+  const handleUpdateCity = async city => {
     setCity(city);
-  }
+    setLoading(true);
+    try {
+      const locationId = await fetchLocationId(city);
+      const { location, weather, temperature } = await fetchWeather(locationId);
+      setLoading(false);
+      setError(false);
+      setInfo({
+        location,
+        weather,
+        temperature
+      });
+    } catch (e) {
+      console.log(e);
+      setLoading(false);
+      setError(true);
+    }
+  };
 
   return (
-    <ImageBackground
-      source = { getImageForWeather('Clear') }
-      style={styles.imageContainer}
-      imageStyle={styles.image}
+    <KeyboardAvoidingView
+      style={styles.container}
+      behavior="padding"
     >
-      <View style={styles.container}>
-        <Text
-          style = {[styles.largeText, styles.textStyle]}
-        >
-          San Francisco
-        </Text>
-        <Text style={[styles.smallText, styles.textStyle]}>
-          Light Cloud
-        </Text>
-        <Text style={[styles.largeText, styles.textStyle]}>
-          24°
-        </Text>
-        <SearchInput 
-          placeholder = "Search city"
-          city = { city }
-          onSubmit = { handleUpdateCity }
-        />
-      </View>
-    </ImageBackground>
+      <ImageBackground
+        source={getImageForWeather(info.weather)}
+        style={styles.imageContainer}
+        imageStyle={styles.image}
+      >
+        <StatusBar barStyle="light-content" />
+        <View style={styles.detailContainer}>
+          <ActivityIndicator animating={loading} color="red" size="large" />
+          {!loading && (
+            <View>
+              {error && (
+                <Text style={[styles.smallText, styles.textStyle]}>
+                  Could not load weather, please try a different city.
+                </Text>
+              )}
+              {!error && (
+                <View>
+                  <Text style={[styles.largeText, styles.textStyle]}>
+                    {info.location}
+                  </Text>
+                  <Text style={[styles.smallText, styles.textStyle]}>
+                    {info.weather}
+                  </Text>
+                  <Text style={[styles.largeText, styles.textStyle]}>
+                    {`${Math.round(info.temperature)}°`}
+                  </Text>
+                </View>
+              )}
+              <SearchInput
+                placeholder="Search city"
+                city={city}
+                onSubmit={handleUpdateCity}
+              />
+            </View>
+          )}
+        </View>
+      </ImageBackground>
+    </KeyboardAvoidingView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center'
+  },
+  detailContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center"
   },
   imageContainer: {
-    flex: 1,
+    flex: 1
   },
   image: {
     flex: 1,
     width: null,
     height: null,
-    resizeMode: 'cover',
+    resizeMode: "cover"
   },
   textStyle: {
-    textAlign: 'center',
-    fontFamily:
-      Platform.OS === 'ios' ? 'AvenirNext-Regular': 'Roboto'
+    textAlign: "center",
+    fontFamily: Platform.OS === "ios" ? "AvenirNext-Regular" : "Roboto"
   },
   largeText: {
-    fontSize: 44,
+    fontSize: 44
   },
   smallText: {
-    fontSize: 18,
-  },
+    fontSize: 18
+  }
 });
 
 export default App;
