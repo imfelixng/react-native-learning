@@ -9,6 +9,13 @@ import getImageForWeather from './utils/getImageForWeather';
 import { SearchInput } from './components';
 
 const App = () => {
+
+  const [city, setCity] = React.useState('Da Nang');
+
+  const handleUpdateCity = (city) => {
+    setCity(city);
+  }
+
   return (
     <ImageBackground
       source = { getImageForWeather('Clear') }
@@ -29,6 +36,8 @@ const App = () => {
         </Text>
         <SearchInput 
           placeholder = "Search city"
+          city = { city }
+          onSubmit = { handleUpdateCity }
         />
       </View>
     </ImageBackground>

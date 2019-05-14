@@ -2,6 +2,18 @@ import React from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 const SearchInput = (props) => {
+
+  const [keyword, setKeyword] = React.useState(props.city);
+
+  const handleInputText = (keyword) => {
+    setKeyword(keyword);
+  }
+
+  const handleSubmit = () => {
+    props.onSubmit(keyword);
+    setKeyword('');
+  }
+
   return (
     <View style = { styles.container }>
       <TextInput
@@ -11,6 +23,9 @@ const SearchInput = (props) => {
         underlineColorAndroid="transparent"
         style={styles.textInput}
         clearButtonMode="always"
+        onChangeText = { handleInputText }
+        onSubmitEditing = { handleSubmit }
+        value = { keyword }
       />
     </View>
   )
