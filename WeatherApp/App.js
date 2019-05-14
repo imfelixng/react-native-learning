@@ -1,18 +1,25 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
-
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
+import {StyleSheet, Text, View, Platform} from 'react-native';
+
+import { SearchInput } from './components';
 
 const App = () => {
   return (
     <View style={styles.container}>
-      <Text>Welcome to React Native!</Text>
+      <Text
+        style = {[styles.largeText, styles.textStyle]}
+      >
+        San Francisco
+      </Text>
+      <Text style={[styles.smallText, styles.textStyle]}>
+        Light Cloud
+      </Text>
+      <Text style={[styles.largeText, styles.textStyle]}>
+        24°
+      </Text>
+      <SearchInput 
+        placeholder = "Search city"
+      />
     </View>
   );
 }
@@ -23,6 +30,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#fff',
+  },
+  textStyle: {
+    textAlign: 'center',
+    fontFamily:
+      Platform.OS === 'ios' ? 'AvenirNext-Regular': 'Roboto'
+  },
+  largeText: {
+    fontSize: 44,
+  },
+  smallText: {
+    fontSize: 18,
   },
 });
 
