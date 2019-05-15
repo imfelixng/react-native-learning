@@ -10,7 +10,9 @@ const EditableTimer = (
     elapsed,
     isRunning,
     onSubmitForm,
-    onRemove
+    onRemove,
+    onStartPress,
+    onStopPress
   }
 ) => {
 
@@ -49,6 +51,8 @@ const EditableTimer = (
       isRunning={isRunning}
       openEditForm = { handleOpenEditForm }
       onRemove = { onRemove }
+      onStartPress = { onStartPress }
+      onStopPress = { onStopPress }
     />
   );
 }

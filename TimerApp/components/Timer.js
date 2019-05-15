@@ -9,8 +9,11 @@ const Timer = (
     title,
     project,
     elapsed,
+    isRunning,
     openEditForm,
-    onRemove
+    onRemove,
+    onStartPress,
+    onStopPress,
   }
 ) => {
   
@@ -18,6 +21,33 @@ const Timer = (
     onRemove(id);
   }
   
+  const handleStartPress = () => {
+    onStartPress(id);
+  };
+  const handleStopPress = () => {
+    onStopPress(id);
+  };
+
+  const RenderActionButton = () => {
+    if (isRunning) {
+      return (
+        <TimerButton
+        color="#DB2828"
+        title="Stop"
+        onPress={handleStopPress}
+        />
+      );
+    }
+
+    return (
+      <TimerButton
+      color="#21BA45"
+      title="Start"
+      onPress={handleStartPress}
+      />
+    );
+  }
+
   const elapsedString = millisecondsToHuman(elapsed);
   return (
     <View style={styles.timerContainer}>
@@ -26,9 +56,9 @@ const Timer = (
       <Text style={styles.elapsedTime}>{elapsedString}</Text>
       <View style={styles.buttonGroup}>
         <TimerButton color="blue" small title="Edit" onPress = { openEditForm } />
-        <TimerButton color="#ff0000" small title="Remove" onPress = { handleRemoveTimer }/>
+        <TimerButton color="#ff0000" small title="Remove" onPress = { handleRemoveTimer }/>     
       </View>
-      <TimerButton color="#21BA45" title="Start" />
+      <RenderActionButton />
     </View>
   )
 }
