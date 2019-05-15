@@ -9,7 +9,10 @@ import { ToggleableTimerForm, EditableTimer } from './components';
 
 import { newTimer } from './utils/TimerUtils';
 
+
 const App = () => {
+
+  let intervalId = null;
 
   const [timers, setTimers] = React.useState(
     [
@@ -54,6 +57,26 @@ const App = () => {
     setTimers(newTimers);
   }
 
+  React.useEffect(() => {
+    const TIME_INTERVAL = 1000;
+    intervalId = setInterval(() => {
+      const newTimers = timers.map(timer => {
+        const { elapsed, isRunning } = timer;
+        console.log(isRunning, elapsed);
+        console.log(elapsed + TIME_INTERVAL);
+        return {
+          ...timer,
+          elapsed: isRunning ? elapsed + TIME_INTERVAL : elapsed,
+        };
+      });
+      setTimers(newTimers);
+    }, TIME_INTERVAL);
+    return () => {
+      clearInterval(intervalId); // componentWillUnmount
+    }
+  }, []); // componentDidMount
+
+  console.log('Is rendering...')
   return (
     <View style = {styles.appContainer} >
       <View style={styles.titleContainer}>
