@@ -6,20 +6,22 @@ const TimerButton = (
     color,
     title,
     small,
+    disabled,
     onPress
   }
 ) => {
   return (
     <TouchableOpacity
-      style={[styles.button, { borderColor: color }]}
-      onPress={onPress}
+      style={[styles.button, { borderColor: disabled ? '#cdcdcd' : color }]}
+      onPress={ !disabled ? onPress : null}
+      activeOpacity = { disabled ? 1 : 0.2 }
     >
       <Text
         style={
           [
             styles.buttonText,
             small ? styles.small : styles.large,
-            { color },
+            { color: disabled ? '#cdcdcd' : color },
           ]
         }
       >
