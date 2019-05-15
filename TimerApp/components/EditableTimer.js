@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import TimerForm from './TimerForm';
 import Timer from './Timer';
@@ -55,6 +56,18 @@ const EditableTimer = (
       onStopPress = { onStopPress }
     />
   );
+}
+
+EditableTimer.propTypes = {
+  id: PropTypes.string,
+  title: PropTypes.string,
+  project: PropTypes.string,
+  elapsed: PropTypes.number,
+  isRunning: PropTypes.bool,
+  onSubmitForm: PropTypes.func,
+  onRemove: PropTypes.func,
+  onStartPress: PropTypes.func,
+  onStopPress:  PropTypes.func,
 }
 
 export default EditableTimer;
