@@ -26,7 +26,7 @@ const Timer = (
       <Text style={styles.elapsedTime}>{elapsedString}</Text>
       <View style={styles.buttonGroup}>
         <TimerButton color="blue" small title="Edit" onPress = { openEditForm } />
-        <TimerButton color="blue" small title="Remove" onPress = { handleRemoveTimer }/>
+        <TimerButton color="#ff0000" small title="Remove" onPress = { handleRemoveTimer }/>
       </View>
       <TimerButton color="#21BA45" title="Start" />
     </View>

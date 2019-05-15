@@ -50,7 +50,8 @@ const App = () => {
   }
 
   const handleRemoveTimer = (id) => {
-    alert(id);
+    const newTimers = timers.filter(timer => timer.id !== id);
+    setTimers(newTimers);
   }
 
   return (
