@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   StyleSheet, Text, View,
-  ScrollView
+  ScrollView, SafeAreaView
 } from 'react-native';
 import uuidv4 from 'uuid/v4';
 
@@ -18,7 +18,7 @@ const App = () => {
         project: 'House Chores',
         id: uuidv4(),
         elapsed: 5456099,
-        isRunning: true,
+        isRunning: false,
       },
       {
         title: 'Bake squash',
@@ -85,7 +85,7 @@ const App = () => {
   }, []); // componentDidMount
 
   return (
-    <View style = {styles.appContainer} >
+    <SafeAreaView style = {styles.appContainer} >
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Timers</Text>
       </View>
@@ -112,7 +112,7 @@ const App = () => {
           })
         }
       </ScrollView>
-    </View>
+    </SafeAreaView>
   )
 }
 
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   titleContainer: {
-    paddingTop: 35,
+    paddingTop: 15,
     paddingBottom: 15,
     borderBottomWidth: 1,
     borderBottomColor: '#D6D7DA',
