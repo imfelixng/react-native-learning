@@ -1,36 +1,38 @@
-import React from 'react';
+import React from "react";
 import {
-  StyleSheet, Text, View,
-  ScrollView, SafeAreaView
-} from 'react-native';
-import uuidv4 from 'uuid/v4';
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  SafeAreaView,
+  KeyboardAvoidingView,
+  Platform
+} from "react-native";
+import uuidv4 from "uuid/v4";
 
-import { ToggleableTimerForm, EditableTimer } from './components';
+import { ToggleableTimerForm, EditableTimer } from "./components";
 
-import { newTimer } from './utils/TimerUtils';
+import { newTimer } from "./utils/TimerUtils";
 
 const App = () => {
+  const [timers, setTimers] = React.useState([
+    {
+      title: "Mow the lawn",
+      project: "House Chores",
+      id: uuidv4(),
+      elapsed: 5456099,
+      isRunning: false
+    },
+    {
+      title: "Bake squash",
+      project: "Kitchen Chores",
+      id: uuidv4(),
+      elapsed: 1273998,
+      isRunning: false
+    }
+  ]);
 
-  const [timers, setTimers] = React.useState(
-    [
-      {
-        title: 'Mow the lawn',
-        project: 'House Chores',
-        id: uuidv4(),
-        elapsed: 5456099,
-        isRunning: false,
-      },
-      {
-        title: 'Bake squash',
-        project: 'Kitchen Chores',
-        id: uuidv4(),
-        elapsed: 1273998,
-        isRunning: false,
-      },
-    ]
-  )
-
-  const handleToggleFormSubmit = (timer) => {
+  const handleToggleFormSubmit = timer => {
     if (!timer.id) {
       const newTimers = [newTimer(timer), ...timers];
       setTimers(newTimers);
@@ -47,93 +49,95 @@ const App = () => {
       });
       setTimers(newTimers);
     }
-  }
+  };
 
-  const handleRemoveTimer = (id) => {
+  const handleRemoveTimer = id => {
     const newTimers = timers.filter(timer => timer.id !== id);
     setTimers(newTimers);
-  }
+  };
 
-  const handleToggleTimer = (id) => {
+  const handleToggleTimer = id => {
     const newTimers = timers.map(timer => {
       if (timer.id === id) {
         return {
           ...timer,
-          isRunning: !timer.isRunning,
+          isRunning: !timer.isRunning
         };
       }
       return timer;
     });
     setTimers(newTimers);
-  }
+  };
 
   React.useEffect(() => {
     const TIME_INTERVAL = 1000;
     let intervalId = setInterval(() => {
-      setTimers(prevTimers => prevTimers.map(timer => {
-        const { elapsed, isRunning } = timer;
+      setTimers(prevTimers =>
+        prevTimers.map(timer => {
+          const { elapsed, isRunning } = timer;
           return {
             ...timer,
-            elapsed: isRunning ? elapsed + 1000 : elapsed,
-          }
+            elapsed: isRunning ? elapsed + 1000 : elapsed
+          };
         })
       );
     }, TIME_INTERVAL);
     return () => {
       clearInterval(intervalId); // componentWillUnmount
-    }
+    };
   }, []); // componentDidMount
 
   return (
-    <SafeAreaView style = {styles.appContainer} >
+    <SafeAreaView style={styles.appContainer}>
       <View style={styles.titleContainer}>
         <Text style={styles.title}>Timers</Text>
       </View>
-      <ScrollView style={styles.timerList}>
-        <ToggleableTimerForm
-          onSubmitForm = { handleToggleFormSubmit }
-        />
-        {
-          timers.map(timer => {
+      <KeyboardAvoidingView 
+        style={styles.appContainer}
+        behavior = { Platform.OS === 'ios' ? 'padding' : null }
+      >
+        <ScrollView style={styles.timerList}>
+          <ToggleableTimerForm onSubmitForm={handleToggleFormSubmit} />
+          {timers.map(timer => {
             return (
               <EditableTimer
-                key = {timer.id}
+                key={timer.id}
                 id={timer.id}
                 title={timer.title}
                 project={timer.project}
                 elapsed={timer.elapsed}
                 isRunning={timer.isRunning}
-                onSubmitForm = { handleToggleFormSubmit }
-                onRemove = { handleRemoveTimer }
-                onStartPress = { handleToggleTimer }
-                onStopPress = { handleToggleTimer }
+                onSubmitForm={handleToggleFormSubmit}
+                onRemove={handleRemoveTimer}
+                onStartPress={handleToggleTimer}
+                onStopPress={handleToggleTimer}
               />
-            )
-          })
-        }
-      </ScrollView>
+            );
+          })}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   appContainer: {
-    flex: 1,
+    flex: 1
   },
   titleContainer: {
     paddingTop: 15,
     paddingBottom: 15,
     borderBottomWidth: 1,
-    borderBottomColor: '#D6D7DA',
+    borderBottomColor: "#D6D7DA"
   },
   title: {
     fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontWeight: "bold",
+    textAlign: "center"
   },
   timerList: {
-    paddingBottom: 15,
-  },
+    paddingBottom: 15
+  }
 });
 
 export default App;
