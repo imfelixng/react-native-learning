@@ -61,7 +61,7 @@ const Timer = (
           onPress = { openEditForm }
           disabled = { isRunning }  
         />
-        <TimerButton color="#ff0000" small title="Remove" onPress = { handleRemoveTimer }/>     
+        <TimerButton color="#ff0000" small title="Remove" onPress = { handleRemoveTimer } disabled = { isRunning } />     
       </View>
       <RenderActionButton />
     </View>
