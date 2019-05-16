@@ -64,4 +64,6 @@ Card.propTypes = {
   onPressLinkText: PropTypes.func,
 }
 
-export default Card;
+export default React.memo(Card, (prevProps, nextProps) => {
+  return prevProps.linkText !== nextProps.linkText;
+});
