@@ -4,15 +4,19 @@ import {
   Text, View,
   SafeAreaView
 } from 'react-native';
-import Avatar from './components/Avatar';
+
+import Card from './components/Card';
 
 const App = () => {
   return (
     <SafeAreaView style = { styles.container }>
-      <Avatar
-      initials="FL"
-      size={35}
-      backgroundColor={'teal'}
+      <Card 
+        fullname = 'An Nguyen Quang'
+        linkText={'Comments'}
+        onPressLinkText={() => {
+          alert('Pressed link!');
+        }}
+        image={{ uri: 'https://unsplash.it/600/600' }}
       />
     </SafeAreaView>
   );
@@ -21,6 +25,7 @@ const App = () => {
 const styles = StyleSheet.create({
   container: {
     flex:1,
+    backgroundColor: '#fff'
   },
 });
 
