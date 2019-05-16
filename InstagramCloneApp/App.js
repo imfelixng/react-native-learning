@@ -7,14 +7,24 @@ import {
 import Feed from './screens/Feed';
 
 const App = () => {
-  const items = [
-    { id: 0, author: 'Bob Ross' },
-    { id: 1, author: 'Chuck Norris' },
-  ];
+
+  const [showModal, setShowModal] = React.useState(false);
+  const [selectedItemId, setSelectedItemId] = React.useState(null);
+  const [commentsForItem, setCommentsForItem] = React.useState({});
+
+  const openCommentScreen = (id) => {
+    setShowModal(true);
+    setCommentsForItem(id);
+  }
+
+  const openCommentScreen = (id) => {
+    setShowModal(false);
+    setCommentsForItem(null);
+  }
+
   return (
     <SafeAreaView style = { styles.container }>
       <Feed 
-        items = { items }
         style = { styles.feed }
       />
     </SafeAreaView>
