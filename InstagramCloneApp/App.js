@@ -18,6 +18,14 @@ const App = () => {
         }}
         image={{ uri: 'https://unsplash.it/600/600' }}
       />
+      <Card 
+        fullname = 'An Nguyen Quang'
+        linkText={'Comments'}
+        onPressLinkText={() => {
+          alert('Pressed link!');
+        }}
+        image={{ uri: 'https://unsplash.it/600/600' }}
+      />
     </SafeAreaView>
   );
 }

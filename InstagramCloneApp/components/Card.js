@@ -1,6 +1,6 @@
 import {
   Image, StyleSheet, View,
-  ActivityIndicator
+  ActivityIndicator, Text
 } from 'react-native';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -19,7 +19,7 @@ const Card = (
   const [loading, setLoading] = React.useState(true);
 
   const handleLoadImage = () => {
-    setLoading(false);
+    setLoading(true);
   }
 
   return (
