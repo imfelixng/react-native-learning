@@ -14,7 +14,7 @@ const CardList = ({ items, commentsForItem, onPressComments }) => {
           uri: getImageFromId(id),
         }
       }
-      linkText={`${comments ? comments.length : 0} Comments`}
+      linkText={`${commentsForItem[id] ? commentsForItem[id].length : 0} Comments`}
       onPressLinkText={() => onPressComments(id)}
     />
   );

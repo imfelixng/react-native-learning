@@ -15,7 +15,7 @@ const Comments = (
   }
 ) => {
   return (
-    <View style={style}>
+    <SafeAreaView style={style}>
       <NavigationBar
         title="Comments"
         leftText="Close"
@@ -26,7 +26,7 @@ const Comments = (
         onSubmit={onSubmitComment}
       />
       <CommentList items={comments} />
-    </View>
+    </SafeAreaView>
   )
 }
 

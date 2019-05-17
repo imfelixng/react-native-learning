@@ -9,7 +9,7 @@ import React from 'react';
 import { fetchImages } from '../utils/api';
 import CardList from '../components/CardList';
 
-const Feed = ({ style = null }) => {
+const Feed = ({ style = null, commentsForItem, onPressComments }) => {
 
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(false);
@@ -42,14 +42,22 @@ const Feed = ({ style = null }) => {
 
   return (
     <View style={style}>
-      <CardList items={items} />
+      <CardList
+        items={items}
+        commentsForItem={commentsForItem}
+        onPressComments = { onPressComments }
+      />
     </View>
   );
 
 }
 
 Feed.propTypes = {
-  style: ViewPropTypes.style
+  style: ViewPropTypes.style,
+  commentsForItem: PropTypes.objectOf(
+    PropTypes.arrayOf(PropTypes.string),
+    ).isRequired,
+  onPressComments: PropTypes.func.isRequired,
 }
 
 export default Feed;
