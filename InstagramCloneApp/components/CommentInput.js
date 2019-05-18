@@ -16,6 +16,7 @@ const CommentInput = (
 
   const handleSubmitEditing = () => {
     onSubmit(text);
+    setText('');
   }
 
   return (

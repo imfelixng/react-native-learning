@@ -2,11 +2,16 @@ import React from 'react';
 import {
   StyleSheet,
   SafeAreaView,
-  Modal
+  Modal,
 } from 'react-native';
+
+import AsyncStorage from '@react-native-community/async-storage';
 
 import Feed from './screens/Feed';
 import Comments from './screens/Comments';
+
+
+const ASYNC_STORAGE_COMMENTS_KEY = 'ASYNC_STORAGE_COMMENTS_KEY';
 
 const App = () => {
 
@@ -16,13 +21,53 @@ const App = () => {
 
   const openCommentScreen = (id) => {
     setShowModal(true);
-    setCommentsForItem(id);
+    setSelectedItemId(id);
   }
 
   const closeCommentScreen = (id) => {
     setShowModal(false);
-    setCommentsForItem(null);
+    setSelectedItemId(null);
   }
+
+  const onSubmitComment = async text => {
+    const comments = commentsForItem[selectedItemId] || [];
+    const updated = {
+      ...commentsForItem,
+      [selectedItemId]: [...comments, text],
+    };
+    setCommentsForItem(updated);
+
+    try {
+      await AsyncStorage.setItem(
+        ASYNC_STORAGE_COMMENTS_KEY,
+        JSON.stringify(updated),
+      );
+    } catch (e) {
+      console.log(
+      'Failed to save comment',
+      text,
+      'for',
+      selectedItemId,
+      );
+    }
+  }
+
+  React.useEffect(() => {
+    (async () => {
+      try {
+        const commentsForItem = await AsyncStorage.getItem(
+          ASYNC_STORAGE_COMMENTS_KEY,
+        );
+        setCommentsForItem(
+          commentsForItem
+          ? JSON.parse(commentsForItem)
+          : {}
+        );
+      } catch (e) {
+        console.log('Failed to load comments');
+      }
+    })();
+  }, []);
 
   return (
     <SafeAreaView style = { styles.container }>
@@ -41,6 +86,7 @@ const App = () => {
           style={styles.comments}
           comments={commentsForItem[selectedItemId] || []}
           onClose={closeCommentScreen}
+          onSubmitComment={onSubmitComment}
         />
       </Modal>
     </SafeAreaView>
