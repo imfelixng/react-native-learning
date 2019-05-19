@@ -1,7 +1,8 @@
 import React from "react";
 import {
   FlatList, StyleSheet,
-  View, TouchableOpacity, Image, Text
+  View, TouchableOpacity, Image, Text,
+  ActivityIndicator
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
@@ -11,6 +12,9 @@ import { MessageShape } from "../utils/MessageUtils";
 const keyExtractor = item => item.id.toString();
 
 const MessageList = ({ messages, onPressMessage = () => {} }) => {
+
+  const [ loading, setLoading ] = React.useState(true);
+
   renderMessageBody = ({ type, text, uri, coordinate }) => {
     switch (type) {
       case "text":
@@ -20,7 +24,22 @@ const MessageList = ({ messages, onPressMessage = () => {} }) => {
           </View>
         );
       case "image":
-        return <Image style={styles.image} source={{ uri }} />;
+        return (
+          <View style={styles.image}>
+            {
+              loading && (
+                <ActivityIndicator
+                  style = { StyleSheet.absoluteFill }
+                />
+              )
+            }
+            <Image
+              source={{ uri }}
+              onLoad = { () =>  setLoading(false)}
+              style = { StyleSheet.absoluteFill }
+            />
+          </View>
+        )
       case "location":
         return (
           <MapView
@@ -92,7 +111,9 @@ const styles = StyleSheet.create({
   image: {
     width: 150,
     height: 150,
-    borderRadius: 10
+    borderRadius: 10,
+    backgroundColor: "rgba(0, 0, 0, 0.1)",
+    overflow: "hidden"
   },
   map: {
     width: 250,
