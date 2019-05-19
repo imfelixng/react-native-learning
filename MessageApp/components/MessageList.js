@@ -62,7 +62,7 @@ const MessageList = ({ messages, onPressMessage = () => {} }) => {
   renderMessageItem = ({ item }) => {
     return (
       <View key={item.id} style={styles.messageRow}>
-        <TouchableOpacity onPress={() => onPressMessage(item)}>
+        <TouchableOpacity onPress={() => loading ? onPressMessage(item) : null}>
           {renderMessageBody(item)}
         </TouchableOpacity>
       </View>
