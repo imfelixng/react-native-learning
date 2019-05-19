@@ -23,10 +23,11 @@ export function createTextMessage(text) {
   };
 }
 export function createImageMessage(uri) {
+  const id = getNextId();
   return {
     type: "image",
-    id: getNextId(),
-    uri
+    id,
+    uri: `${uri}/id/${id}/300/300`
   };
 }
 export function createLocationMessage(coordinate) {
