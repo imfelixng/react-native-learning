@@ -5,13 +5,13 @@ import {
   TouchableHighlight,
   Image,
   Text,
-  Dimensions
+  Dimensions,
+  BackHandler
 } from "react-native";
 import React from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 import { getStatusBarHeight } from "react-native-status-bar-height";
-
 
 import Status from "./components/Status.js";
 
@@ -46,7 +46,7 @@ const App = () => {
 
   const handlePressMessage = ({ id, type }) => {
     switch (type) {
-      case "text":
+      case "text": {
         Alert.alert(
           "Delete message?",
           "Are you sure you want to permanently delete this message?",
@@ -65,6 +65,7 @@ const App = () => {
           ]
         );
         break;
+      }
       case "image": {
         setFullscreenImageId(id);
         break;
@@ -117,7 +118,7 @@ const App = () => {
       <View style={styles.fullscreenLocation}>
         <TouchableHighlight
           style={styles.fullscreenText}
-          onPress = { dismissFullscreenLocation }
+          onPress={dismissFullscreenLocation}
         >
           <Text>Close</Text>
         </TouchableHighlight>
@@ -135,6 +136,20 @@ const App = () => {
       </View>
     );
   };
+
+  React.useEffect(() => {
+    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
+      if (fullscreenImageId) {
+        dismissFullscreenImage();
+      }
+      if (fullscreenLocationId) {
+        dismissFullscreenImage();
+      }
+    });
+    return () => {
+      subscription.remove();
+    }
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -187,15 +202,15 @@ const styles = StyleSheet.create({
   },
   fullscreenText: {
     ...StyleSheet.absoluteFillObject,
-    top: getStatusBarHeight() + 20,
-    left: Dimensions.get('window').width - 70,
+    top: getStatusBarHeight() + 10,
+    left: Dimensions.get("window").width - 70,
     zIndex: 3,
-    backgroundColor: 'rgba(1,1,1,0.3)',
+    backgroundColor: "rgba(1,1,1,0.3)",
     width: 50,
     height: 20,
     borderRadius: 5,
-    justifyContent: 'center',
-    alignItems: 'center'
+    justifyContent: "center",
+    alignItems: "center"
   }
 });
 

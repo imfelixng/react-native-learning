@@ -2,7 +2,8 @@ import React from "react";
 import {
   FlatList, StyleSheet,
   View, TouchableOpacity, Image, Text,
-  ActivityIndicator
+  ActivityIndicator,
+  BackHandler
 } from "react-native";
 import MapView, { PROVIDER_GOOGLE } from 'react-native-maps';
 
@@ -62,7 +63,7 @@ const MessageList = ({ messages, onPressMessage = () => {} }) => {
   renderMessageItem = ({ item }) => {
     return (
       <View key={item.id} style={styles.messageRow}>
-        <TouchableOpacity onPress={() => loading ? onPressMessage(item) : null}>
+        <TouchableOpacity onPress={() => onPressMessage(item)}>
           {renderMessageBody(item)}
         </TouchableOpacity>
       </View>
