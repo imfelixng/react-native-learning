@@ -3,9 +3,15 @@ import {
   View,
   Alert,
   TouchableHighlight,
-  Image
+  Image,
+  Text,
+  Dimensions
 } from "react-native";
 import React from "react";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+
+import { getStatusBarHeight } from "react-native-status-bar-height";
+
 
 import Status from "./components/Status.js";
 
@@ -28,9 +34,14 @@ const App = () => {
   ]);
 
   const [fullscreenImageId, setFullscreenImageId] = React.useState(null);
+  const [fullscreenLocationId, setFullscreenLocationId] = React.useState(null);
 
   const dismissFullscreenImage = () => {
     setFullscreenImageId(null);
+  };
+
+  const dismissFullscreenLocation = () => {
+    setFullscreenLocationId(null);
   };
 
   const handlePressMessage = ({ id, type }) => {
@@ -56,6 +67,10 @@ const App = () => {
         break;
       case "image": {
         setFullscreenImageId(id);
+        break;
+      }
+      case "location": {
+        setFullscreenLocationId(id);
         break;
       }
       default:
@@ -91,6 +106,36 @@ const App = () => {
     );
   };
 
+  renderFullscreenLocation = () => {
+    if (!fullscreenLocationId) return null;
+    const location = messages.find(
+      message => message.id === fullscreenLocationId
+    );
+    if (!location) return null;
+    const { coordinate } = location;
+    return (
+      <View style={styles.fullscreenLocation}>
+        <TouchableHighlight
+          style={styles.fullscreenText}
+          onPress = { dismissFullscreenLocation }
+        >
+          <Text>Close</Text>
+        </TouchableHighlight>
+        <MapView
+          style={styles.fullscreenLocation}
+          provider={PROVIDER_GOOGLE}
+          initialRegion={{
+            ...coordinate,
+            latitudeDelta: 0.08,
+            longitudeDelta: 0.04
+          }}
+        >
+          <MapView.Marker coordinate={coordinate} />
+        </MapView>
+      </View>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <Status />
@@ -98,6 +143,7 @@ const App = () => {
       {renderToolbar()}
       {renderInputMethodEditor()}
       {renderFullscreenImage()}
+      {renderFullscreenLocation()}
     </View>
   );
 };
@@ -128,6 +174,28 @@ const styles = StyleSheet.create({
   fullscreenImage: {
     flex: 1,
     resizeMode: "contain"
+  },
+  fullscreenLocation: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "black",
+    zIndex: 2
+  },
+  fullscreenMap: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "black",
+    zIndex: 2
+  },
+  fullscreenText: {
+    ...StyleSheet.absoluteFillObject,
+    top: getStatusBarHeight() + 20,
+    left: Dimensions.get('window').width - 70,
+    zIndex: 3,
+    backgroundColor: 'rgba(1,1,1,0.3)',
+    width: 50,
+    height: 20,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
 
