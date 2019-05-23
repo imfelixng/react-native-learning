@@ -21,6 +21,7 @@ import {
   createLocationMessage,
   createTextMessage
 } from "./utils/MessageUtils";
+import Toolbar from "./components/Toolbar.js";
 
 const App = () => {
   const [messages, setMessages] = React.useState([
@@ -35,6 +36,8 @@ const App = () => {
 
   const [fullscreenImageId, setFullscreenImageId] = React.useState(null);
   const [fullscreenLocationId, setFullscreenLocationId] = React.useState(null);
+
+  const [isInputFocused, setIsInputFocused] = React.useState(false);
 
   const dismissFullscreenImage = () => {
     setFullscreenImageId(null);
@@ -68,10 +71,12 @@ const App = () => {
       }
       case "image": {
         setFullscreenImageId(id);
+        setIsInputFocused(false);
         break;
       }
       case "location": {
         setFullscreenLocationId(id);
+        setIsInputFocused(false);
         break;
       }
       default:
@@ -89,7 +94,17 @@ const App = () => {
     return <View style={styles.inputMethodEditor} />;
   };
   renderToolbar = () => {
-    return <View style={styles.toolbar} />;
+    return (
+      <View style={styles.toolbar}>
+        <Toolbar
+          isFocused={isInputFocused}
+          onSubmit={handleSubmit}
+          onChangeFocus={handleChangeFocus}
+          onPressCamera={handlePressToolbarCamera}
+          onPressLocation={handlePressToolbarLocation}
+        />
+      </View>
+    );
   };
 
   renderFullscreenImage = () => {
@@ -137,18 +152,34 @@ const App = () => {
     );
   };
 
+  const handlePressToolbarCamera = () => {
+    // ...
+  };
+  const handlePressToolbarLocation = () => {
+    // ...
+  };
+  const handleChangeFocus = isFocused => {
+    setIsInputFocused(isFocused);
+  };
+  handleSubmit = text => {
+    setMessages([createTextMessage(text), ...messages]);
+  };
+
   React.useEffect(() => {
-    const subscription = BackHandler.addEventListener("hardwareBackPress", () => {
-      if (fullscreenImageId) {
-        dismissFullscreenImage();
+    const subscription = BackHandler.addEventListener(
+      "hardwareBackPress",
+      () => {
+        if (fullscreenImageId) {
+          dismissFullscreenImage();
+        }
+        if (fullscreenLocationId) {
+          dismissFullscreenLocation();
+        }
       }
-      if (fullscreenLocationId) {
-        dismissFullscreenImage();
-      }
-    });
+    );
     return () => {
       subscription.remove();
-    }
+    };
   }, []);
 
   return (
