@@ -156,7 +156,19 @@ const App = () => {
     // ...
   };
   const handlePressToolbarLocation = () => {
-    // ...
+    navigator.geolocation.getCurrentPosition(position => {
+      const {
+        coords: { latitude, longitude }
+      } = position;
+
+      setMessages([
+        createLocationMessage({
+          latitude,
+          longitude
+        }),
+        ...messages
+      ])
+    });
   };
   const handleChangeFocus = isFocused => {
     setIsInputFocused(isFocused);

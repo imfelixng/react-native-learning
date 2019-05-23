@@ -3,13 +3,13 @@ import {
   Text,
   TextInput,
   TouchableOpacity,
-  View
+  View,
 } from "react-native";
 import PropTypes from "prop-types";
 import React from "react";
 
 import Icon from "react-native-vector-icons/Ionicons";
-
+import Geolocation from 'react-native-geolocation-service';
 
 const ToolbarButton = ({ title, onPress }) => (
   <TouchableOpacity onPress={onPress}>
