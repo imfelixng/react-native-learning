@@ -7,12 +7,12 @@ buildscript {
         compileSdkVersion = 28
         targetSdkVersion = 28
         supportLibVersion = "28.0.0"
-        googlePlayServicesVersion = "16.1.0" // or set latest version
+        googlePlayServicesVersion = "16.0.0" // or set latest version
         androidMapsUtilsVersion = "0.5+"
     }
     repositories {
-        jcenter()
         google()
+        jcenter()
         maven {
             url 'https://maven.google.com/'
             name 'Google'
@@ -28,8 +28,8 @@ buildscript {
 
 allprojects {
     repositories {
-        mavenLocal()
         google()
+        mavenLocal()
         jcenter()
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
