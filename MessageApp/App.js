@@ -13,6 +13,8 @@ import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 
 import { getStatusBarHeight } from "react-native-status-bar-height";
 
+import Geolocation from 'react-native-geolocation-service';
+
 import Status from "./components/Status.js";
 
 import MessageList from "./components/MessageList";
@@ -22,6 +24,7 @@ import {
   createTextMessage
 } from "./utils/MessageUtils";
 import Toolbar from "./components/Toolbar.js";
+import ImageGrid from "./components/ImageGrid.js";
 
 const App = () => {
   const [messages, setMessages] = React.useState([
@@ -90,8 +93,18 @@ const App = () => {
       </View>
     );
   };
+
+  handlePressImage = (uri) => {
+    alert(uri);
+    setMessages([createImageMessage(uri), ...messages]);
+  };
+
   renderInputMethodEditor = () => {
-    return <View style={styles.inputMethodEditor} />;
+    return <View style={styles.inputMethodEditor}>
+      <ImageGrid 
+        onPressImage={handlePressImage}
+      />
+    </View>;
   };
   renderToolbar = () => {
     return (
@@ -156,7 +169,7 @@ const App = () => {
     // ...
   };
   const handlePressToolbarLocation = () => {
-    navigator.geolocation.getCurrentPosition(position => {
+    Geolocation.getCurrentPosition(position => {
       const {
         coords: { latitude, longitude }
       } = position;
@@ -168,6 +181,8 @@ const App = () => {
         }),
         ...messages
       ])
+    }, (error) => {
+      alert('You did\'t turn on location')
     });
   };
   const handleChangeFocus = isFocused => {

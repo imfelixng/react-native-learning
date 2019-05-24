@@ -19,6 +19,7 @@ target 'MessageApp' do
     'RCTText',
     'RCTVibration',
     'RCTWebSocket',
+    'RCTCameraRoll'
   ]
 
   # React Native third party dependencies podspecs
@@ -36,6 +37,8 @@ target 'MessageApp' do
   pod 'GoogleMaps'  # Uncomment this line if you want to support GoogleMaps on iOS
   pod 'Google-Maps-iOS-Utils' # Uncomment this line if you want to support GoogleMaps on iOS
   pod 'RNVectorIcons', :path => '../node_modules/react-native-vector-icons'
+
+  pod 'react-native-cameraroll', :path => '../node_modules/@react-native-community/cameraroll'
 
 end
 
