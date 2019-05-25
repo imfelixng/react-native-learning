@@ -1,0 +1,3 @@
+rootProject.name = 'ChartNativeModuleApp'
+
+include ':app'
