@@ -6,7 +6,8 @@ import {
   Image,
   Text,
   Dimensions,
-  BackHandler
+  BackHandler,
+  PermissionsAndroid
 } from "react-native";
 import React from "react";
 import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
@@ -169,6 +170,7 @@ const App = () => {
     // ...
   };
   const handlePressToolbarLocation = () => {
+    requestFindLocationPermission();
     Geolocation.getCurrentPosition(position => {
       const {
         coords: { latitude, longitude }
@@ -185,6 +187,22 @@ const App = () => {
       alert('You did\'t turn on location')
     });
   };
+
+  async function requestFindLocationPermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the camera');
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+
   const handleChangeFocus = isFocused => {
     setIsInputFocused(isFocused);
   };

@@ -1,4 +1,6 @@
-import { Image, StyleSheet, TouchableOpacity } from "react-native";
+import { Image, StyleSheet, TouchableOpacity,
+  PermissionsAndroid
+} from "react-native";
 import PropTypes from "prop-types";
 import React from "react";
 import CameraRoll from "@react-native-community/cameraroll";
@@ -13,7 +15,23 @@ const ImageGrid = ({ onPressImage = () => {} }) => {
 
   React.useEffect(() => {
     getImages();
+    requestReadStoragePermission();
   }, []);
+
+  async function requestReadStoragePermission() {
+    try {
+      const granted = await PermissionsAndroid.request(
+        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+      );
+      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+        console.log('You can use the camera');
+      } else {
+        console.log('Camera permission denied');
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }
 
   const getImages = async after => {
     const results = await CameraRoll.getPhotos({
