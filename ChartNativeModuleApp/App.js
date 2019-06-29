@@ -1,49 +1,50 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- * @flow
- */
+import React from "react";
+import { AppRegistry, StyleSheet, Text, View, Button } from "react-native";
 
-import React, {Component} from 'react';
-import {Platform, StyleSheet, Text, View} from 'react-native';
+import PieChart from "./PieChart";
 
-const instructions = Platform.select({
-  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
-  android:
-    'Double tap R on your keyboard to reload,\n' +
-    'Shake or press menu button for dev menu',
-});
+const App = () => {
+  const [data, setData] = React.useState([
+    { value: 12, color: "#2196F3" },
+    { value: 12, color: "#8BC34A" },
+    { value: 8, color: "#f44336" },
+    { value: 4, color: "#FF9800" }
+  ]);
 
-type Props = {};
-export default class App extends Component<Props> {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.welcome}>Welcome to React Native!</Text>
-        <Text style={styles.instructions}>To get started, edit App.js</Text>
-        <Text style={styles.instructions}>{instructions}</Text>
-      </View>
+  const randomize = () => {
+    setData(
+      data.map(slice => ({
+        value: Math.random() + 0.1,
+        color: slice.color
+      }))
     );
-  }
-}
+  };
+
+  return (
+    <View style={styles.container}>
+      <PieChart
+        style={styles.chart}
+        strokeColor={"white"}
+        strokeWidth={4}
+        data={data}
+      />
+      <Button title="Press to randomize" onPress={this.randomize} />
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center"
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
+  chart: {
+    width: 300,
+    height: 300,
+    marginBottom: 20
+  }
 });
+
+export default App;
