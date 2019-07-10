@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
   <key>CFBundleIdentifier</key>
-	<string>ngquangan.auth0.com</string>
+	<string>org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 			<dict>
@@ -13,7 +13,7 @@
 					<string>auth0</string>
 					<key>CFBundleURLSchemes</key>
 					<array>
-							<string>ngquangan.auth0.com</string>
+							<string>org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)</string>
 					</array>
 			</dict>
 	</array>
